@@ -1,11 +1,26 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { authContext } from "../../providers/AuthProvider";
 
 const Registration = () => {
+
+  const {createUser} = useContext(authContext);
+
   const handleRegister = (e) => {
     e.preventDefault();
     const name = e.target.name.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
+    console.log(email);
+
+    //! Create User in Firebase 
+    createUser(email, password)
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((err) => {
+      console.log(err.message);
+    })
   };
 
   return (
@@ -21,8 +36,7 @@ const Registration = () => {
                 <span className="label-text">Name</span>
               </label>
               <input
-                type="text"
-                name="email"
+                type="text" name="name"
                 placeholder="Name"
                 className="input input-bordered"
                 required
@@ -51,7 +65,7 @@ const Registration = () => {
               />
             </div>
             <div className="form-control mt-6">
-              <button className="btn btn-primary">Login</button>
+              <button className="btn btn-primary">Register</button>
             </div>
             <p>
               Already have an Account? Please
