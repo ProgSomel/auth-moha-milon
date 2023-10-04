@@ -1,10 +1,12 @@
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { authContext } from "../../providers/AuthProvider";
 
 const Login = () => {
 
-  const {signInUser} = useContext(authContext);
+  const {signInUser, signInWithGoogle} = useContext(authContext);
+  const navigate = useNavigate();
+
 
 
     const handleLogin = e => {
@@ -16,9 +18,18 @@ const Login = () => {
         signInUser(email, password)
         .then((result) => {
           console.log(result.user);
+          e.target.reset();
+          navigate('/');
+
         })
         .catch((error) => console.error(error));
-        
+
+    }
+
+    const handleSignInWithGoogle  = () => {
+      signInWithGoogle()
+      .then(result => console.log(result))
+      .catch(error => console.error(error));
 
     }
 
@@ -64,6 +75,7 @@ const Login = () => {
             <p>New to Auth Moha Milon? Please<Link to="/register">
                 <button className="text-purple-700 underline"> Register</button>
             </Link> </p>
+            <p> <button onClick={handleSignInWithGoogle} className="btn btn-ghost "> Google</button></p>
           </form>
 
         </div>
